@@ -22,14 +22,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val newsRepository=NewsRepository(ArticleDatabase(this))
-        val viewModelProviderFactory=NewsViewModelProviderFactory(newsRepository)
-      //  viewModel=NewsViewModel(newsRepository)
-        viewModel = ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
-      //  viewModel=ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
+            val newsRepository= NewsRepository(ArticleDatabase(this))
+            val viewModelProviderFactory=NewsViewModelProviderFactory(newsRepository)
+            //  viewModel=NewsViewModel(newsRepository)
+            viewModel = ViewModelProvider(this,viewModelProviderFactory).get(NewsViewModel::class.java)
 
             logs(viewModel.toString())
-        Log.d("MainActivity",viewModel.toString())
+            Log.d("MainActivity",viewModel.toString())
+
+
+
 
        bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController())
 

@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.josus.mynewsapp.R
 import com.josus.mynewsapp.ui.adapters.NewsAdapter
+import com.josus.mynewsapp.ui.util.ConnectionManager
 import com.josus.mynewsapp.ui.util.Resource
 import kotlinx.android.synthetic.main.fragment_breaking_news.*
 
@@ -38,44 +40,55 @@ class BreakingNewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
         viewModel = (activity as MainActivity).viewModel
 
 
-        newsAdapter.setOnItemClickListener {
-            val bundle=Bundle().apply {
-                putSerializable("article",it)
-            }
-            findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
-        }
-        try {
-            viewModel?.breakingNews?.observe(viewLifecycleOwner, { response->
-                when(response){
-                    is Resource.Success->{
-                        hideProgressBar()
-                        response.data?.let { newsResponse ->
-                            newsAdapter.differ.submitList(newsResponse.articles)
-                            Log.d("Fragment",response.data.totalResults.toString())
 
-                        }
-                    }
 
-                    is Resource.Error->{
-                        hideProgressBar()
-                        response.message?.let {message->
-                            Log.d(TAG,"An error occured:$message")
-                        }
-                    }
+        if (ConnectionManager().checkConnectivity(activity as MainActivity)){
 
-                    is Resource.Loading->{
-                        showProgressBar()
-                    }
+            setupRecyclerView()
+
+            newsAdapter.setOnItemClickListener {
+                val bundle=Bundle().apply {
+                    putSerializable("article",it)
                 }
-            })
+                findNavController().navigate(R.id.action_breakingNewsFragment_to_articleFragment,bundle)
+            }
+            try {
+                viewModel?.breakingNews?.observe(viewLifecycleOwner, { response->
+                    when(response){
+                        is Resource.Success->{
+                            hideProgressBar()
+                            response.data?.let { newsResponse ->
+                                newsAdapter.differ.submitList(newsResponse.articles)
+                                Log.d("Fragment",response.data.totalResults.toString())
+
+                            }
+                        }
+
+                        is Resource.Error->{
+                            hideProgressBar()
+                            response.message?.let {message->
+                                Log.d(TAG,"An error occured:$message")
+                            }
+                        }
+
+                        is Resource.Loading->{
+                            showProgressBar()
+                        }
+                    }
+                })
+            }
+            catch (e:Exception){
+                Log.d("Fragment",e.toString())
+            }
         }
-        catch (e:Exception){
-            Log.d("Fragment",e.toString())
+        else{
+            Toast.makeText(context,R.string.offline_message,Toast.LENGTH_LONG).show()
+           // Snackbar.make(view,R.string.offline_message,Snackbar.LENGTH_LONG).show()
         }
+
 
     }
 
