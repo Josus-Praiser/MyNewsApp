@@ -2,4 +2,7 @@
     <string name="app_name">MyNewsApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txt_menu_search_news">Search News</string>
+    <string name="txt_menu_breaking_news">Breaking News</string>
+    <string name="txt_menu_saved_news">Saved News</string>
 </resources>

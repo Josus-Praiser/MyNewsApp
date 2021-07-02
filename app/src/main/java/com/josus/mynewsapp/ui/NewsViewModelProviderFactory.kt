@@ -10,10 +10,8 @@ class NewsViewModelProviderFactory(
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
-
             @Suppress("UNCHECKED_CAST")
             return NewsViewModel(newsRepository) as T
-
     }
 }
 

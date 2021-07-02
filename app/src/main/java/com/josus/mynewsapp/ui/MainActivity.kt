@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
             logs(viewModel.toString())
         Log.d("MainActivity",viewModel.toString())
 
-
        bottomNavigationView.setupWithNavController(newsNavHostFragment.findNavController())
 
     }

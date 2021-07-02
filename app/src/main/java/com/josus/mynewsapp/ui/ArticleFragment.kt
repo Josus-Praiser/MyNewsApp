@@ -1,12 +1,14 @@
 package com.josus.mynewsapp.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.snackbar.Snackbar
 import com.josus.mynewsapp.R
 import kotlinx.android.synthetic.main.fragment_article.*
 
@@ -16,6 +18,7 @@ class ArticleFragment : Fragment() {
 
   var viewModel:NewsViewModel?=null
     val args:ArticleFragmentArgs by navArgs()
+    val TAG="ArticleFragment"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,19 @@ class ArticleFragment : Fragment() {
             webViewClient= WebViewClient()
             loadUrl(article.url)
         }
+
+        try {
+            fab.setOnClickListener {
+                viewModel?.saveArticle(article)
+                Snackbar.make(view,"Article Saved Successfully", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+        catch (e:Exception){
+            Log.d(TAG,e.toString())
+        }
+
+
+
     }
 
 
