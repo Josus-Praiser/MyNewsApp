@@ -61,26 +61,30 @@ class SearchNewsFragment : Fragment() {
                     bundle
                 )
             }
+        } else {
+            Toast.makeText(context, R.string.offline_message, Toast.LENGTH_LONG).show()
+            // Snackbar.make(view, R.string.offline_message, Snackbar.LENGTH_LONG).show()
+        }
 
 
-            var job: Job? = null
-            etSearch.addTextChangedListener { editable ->
-                job?.cancel()
-                job = MainScope().launch {
-                    delay(SEARCH_NEWS_TIME_DELAY)
-                    editable?.let {
-                        if (editable.toString()
-                                .isNotEmpty() && ConnectionManager().checkConnectivity(activity as MainActivity)
-                        ) {
-                            viewModel?.getSeacrhNews(editable.toString())
-                        } else {
-                            Toast.makeText(context, "You are Offline", Toast.LENGTH_SHORT).show()
-                        }
+        var job: Job? = null
+        etSearch.addTextChangedListener { editable ->
+            job?.cancel()
+            job = MainScope().launch {
+                delay(SEARCH_NEWS_TIME_DELAY)
+                editable?.let {
+                    if (editable.toString()
+                            .isNotEmpty() && ConnectionManager().checkConnectivity(activity as MainActivity)
+                    ) {
+                        viewModel?.getSeacrhNews(editable.toString())
+                    } else {
+                        Toast.makeText(context, "You are Offline", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+        }
 
-
+        if (ConnectionManager().checkConnectivity(activity as MainActivity)) {
             viewModel?.searchedNews?.observe(viewLifecycleOwner, Observer { response ->
                 when (response) {
                     is Resource.Success -> {
@@ -92,7 +96,6 @@ class SearchNewsFragment : Fragment() {
 
                         }
                     }
-
                     is Resource.Error -> {
                         hideProgressBar()
                         response.message?.let { message ->
@@ -106,10 +109,8 @@ class SearchNewsFragment : Fragment() {
                 }
             })
         } else {
-            Toast.makeText(context,R.string.offline_message,Toast.LENGTH_LONG).show()
-           // Snackbar.make(view, R.string.offline_message, Snackbar.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.offline_message, Toast.LENGTH_LONG).show()
         }
-
 
     }
 

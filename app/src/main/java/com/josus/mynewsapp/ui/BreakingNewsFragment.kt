@@ -42,12 +42,10 @@ class BreakingNewsFragment : Fragment() {
 
         viewModel = (activity as MainActivity).viewModel
 
-
+        setupRecyclerView()
 
 
         if (ConnectionManager().checkConnectivity(activity as MainActivity)){
-
-            setupRecyclerView()
 
             newsAdapter.setOnItemClickListener {
                 val bundle=Bundle().apply {

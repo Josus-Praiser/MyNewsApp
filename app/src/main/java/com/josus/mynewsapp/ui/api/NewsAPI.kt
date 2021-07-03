@@ -1,7 +1,7 @@
 package com.josus.mynewsapp.ui.api
 
+import com.josus.mynewsapp.BuildConfig.API_KEY
 import com.josus.mynewsapp.ui.data.NewsResponse
-import com.josus.mynewsapp.ui.util.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -18,7 +18,7 @@ interface NewsAPI {
         @Query("page")
         pageNumber:Int=1,
         @Query("apiKey")
-        apiKey:String=API_KEY
+        apiKey:String= API_KEY
     ):Response<NewsResponse>
 
     @GET("v2/everything")
