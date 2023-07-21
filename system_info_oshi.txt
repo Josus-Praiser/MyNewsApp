@@ -1,0 +1,28 @@
+import oshi.SystemInfo;
+import oshi.hardware.CentralProcessor;
+import oshi.hardware.HardwareAbstractionLayer;
+import oshi.jna.platform.mac.SystemB;
+
+public class SystemInfoJava {
+    public void getSystemInfo(){
+        try {
+            SystemInfo si = new SystemInfo();
+            HardwareAbstractionLayer hal = si.getHardware();
+            CentralProcessor cpu = hal.getProcessor();
+            System.out.print(si.toString());
+            System.out.print(hal.toString());
+            System.out.print(cpu.toString());
+        }
+        catch (NoClassDefFoundError e){
+            System.out.print(e);
+        }
+
+    }
+
+    public static void main(String[] args){
+        SystemInfoJava sinj = new SystemInfoJava();
+        sinj.getSystemInfo();
+
+    }
+}
+
